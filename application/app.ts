@@ -1,7 +1,7 @@
 import axios from 'axios';
 import * as readline from 'readline-sync';
+import { Fighter } from './interface';
 
-// het logo
 let logo = () => {
     console.log(`*******************************`);
     console.log(`___   ___   ______    ______`);
@@ -15,28 +15,6 @@ let logo = () => {
    console.log();
 }
 
-// de interface
-interface Fighter {
-    id: number;
-    name: string;
-    nationality: string;
-    age: number;
-    active: boolean;
-    birthdate: string;
-    profile_image: string;
-    status: string;
-    weightclass: string[];
-    other_details: {
-        id: number;
-        height: number;
-        weight: number;
-        reach: number;
-        record: string;
-        stance: string;
-    };
-}
-
-// beide modules in mijn menu maken gebruik van de API/JSON dus heb ik besloten om ze in een functie te steken zo hoef je ze maar 1 keer te roepen
 
 const api = async (): Promise<Fighter[]> => {
     try {
@@ -48,7 +26,6 @@ const api = async (): Promise<Fighter[]> => {
     }
 }
 
-// de show fighters optie
 const showAllFighter = async () => {
     const fighters = await api();
     fighters.forEach(fighter => {
@@ -56,7 +33,6 @@ const showAllFighter = async () => {
     });
 }
 
-// de filter by Id optie
 const filterById = async () => {
     const fighters = await api();
     let filterId: number = readline.questionInt(`Please enter the ID you want to filter by: `);
@@ -71,7 +47,6 @@ const filterById = async () => {
 
 console.log();
 
-// application
 const application = async () => {
     logo();
     let exit: boolean = false;
