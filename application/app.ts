@@ -1,6 +1,21 @@
 import axios from 'axios';
 import * as readline from 'readline-sync';
 
+// het logo
+let logo = () => {
+    console.log(`*******************************`);
+    console.log(`___   ___   ______    ______`);
+    console.log(`|  | |  |  |   ___|  /  ____|`);
+    console.log(`|  | |  |  |  |___   |  |`);
+    console.log(`|  | |  |  |   ___|  |  |`);
+    console.log(`|  |_|  |  |  |      |  |___`);
+   console.log(`\\_______/  |__|      \\______|`);
+   console.log();
+   console.log(`*******************************`);
+   console.log();
+}
+
+// de interface
 interface Fighter {
     id: number;
     name: string;
@@ -21,6 +36,8 @@ interface Fighter {
     };
 }
 
+// beide modules in mijn menu maken gebruik van de API/JSON dus heb ik besloten om ze in een functie te steken zo hoef je ze maar 1 keer te roepen
+
 const api = async (): Promise<Fighter[]> => {
     try {
         const response = await axios.get<Fighter[]>('https://eliaselmokadem.github.io/fightersAPI/fighters.json');
@@ -31,6 +48,7 @@ const api = async (): Promise<Fighter[]> => {
     }
 }
 
+// de show fighters optie
 const showAllFighter = async () => {
     const fighters = await api();
     fighters.forEach(fighter => {
@@ -38,6 +56,7 @@ const showAllFighter = async () => {
     });
 }
 
+// de filter by Id optie
 const filterById = async () => {
     const fighters = await api();
     let filterId: number = readline.questionInt(`Please enter the ID you want to filter by: `);
@@ -52,7 +71,9 @@ const filterById = async () => {
 
 console.log();
 
+// application
 const application = async () => {
+    logo();
     let exit: boolean = false;
     console.log(`Welcome to UFC Fighters JSON Selector!`);
 
