@@ -21,14 +21,36 @@ interface Fighter {
     };
 }
 
-const showAllFighter = async () => {
+const api = async (): Promise<Fighter[]> => {
     try {
         const response = await axios.get<Fighter[]>('https://eliaselmokadem.github.io/fightersAPI/fighters.json');
-        console.log(response.data);
+        return response.data;
     } catch (error) {
         console.error(error);
+        return [];
     }
 }
+
+const showAllFighter = async () => {
+    const fighters = await api();
+    fighters.forEach(fighter => {
+        console.log(`${fighter.name} (ID: ${fighter.id})`);
+    });
+}
+
+const filterById = async () => {
+    const fighters = await api();
+    let filterId: number = readline.questionInt(`Please enter the ID you want to filter by: `);
+    const filteredFighter = fighters.find(fighter => fighter.id === filterId);
+    if (filteredFighter) {
+        console.log(filteredFighter);
+    } else {
+        console.log(`Fighter with ID ${filterId} not found.`);
+    }
+}
+
+
+console.log();
 
 const application = async () => {
     let exit: boolean = false;
@@ -38,18 +60,20 @@ const application = async () => {
         let option: number = readline.questionInt(`
 -----------------------------
 | 1. Show fighters          |
-| 2. Still under maintenance|
+| 2. Filter By Id           |
 | 3. Exit                   |
 -----------------------------
 
 Please select an option: `);
+
+        console.log();
 
         switch (option) {
             case 1:
                 await showAllFighter();
                 break;
             case 2:
-                console.log("This option is still under maintenance.");
+                await filterById();
                 break;
             case 3:
                 exit = true;
